@@ -1,0 +1,14 @@
+{
+  "name": "treino",
+  "version": "1.0.0",
+  "private": true,
+  "description": "App de treino de musculação (PWA) com sincronização opcional no Google Sheets",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "start": "npx --yes http-server -c-1 -p 8080 ."
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
