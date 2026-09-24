@@ -20,8 +20,11 @@ export function fromLegacy(docs, { exercises, plans }) {
   const out = [];
   for (const d of docs || []) {
     if (!d || !d.id || !d.date) continue;
-    const ts = Number(d.ts) || Date.parse(`${d.date}T12:00:00`);
-    const base = { id: `legacy-${d.id}`, date: d.date, startedAt: ts, rpe: d.rpe ?? null, notes: d.notes || '', updatedAt: ts, deleted: false };
+    // O artefato não guardava o horário real (ts = meio-dia + hora do salvamento, às vezes no dia seguinte):
+    // o início fica ao meio-dia da data do treino.
+    const noon = new Date(`${d.date}T12:00:00`).getTime();
+    const ts = Number(d.ts) || noon;
+    const base = { id: `legacy-${d.id}`, date: d.date, startedAt: noon, rpe: d.rpe ?? null, notes: d.notes || '', updatedAt: ts, deleted: false };
     if (d.kind === 'gym') {
       const planId = LEGACY_PLAN[d.workout] || null;
       const plan = plans.get(planId);
@@ -45,10 +48,10 @@ export function fromLegacy(docs, { exercises, plans }) {
       }).filter(it => it.sets.length);
       // O artefato antigo às vezes guardava durações de dias (rascunho esquecido aberto).
       const dur = Number(d.durMin) > 0 && Number(d.durMin) <= 300 ? Number(d.durMin) * 60 : null;
-      out.push({ ...base, kind: 'gym', planId, planName: plan?.name || `Treino ${d.workout || ''}`.trim(), finishedAt: dur ? ts + dur * 1000 : ts, durationSec: dur, items, bodyweight: numOrNull(d.bw) });
+      out.push({ ...base, kind: 'gym', planId, planName: plan?.name || `Treino ${d.workout || ''}`.trim(), finishedAt: dur ? noon + dur * 1000 : noon, durationSec: dur, items, bodyweight: numOrNull(d.bw) });
     } else if (LEGACY_CARDIO[d.kind]) {
       const durationSec = d.kind === 'run' ? numOrNull(d.sec) : (numOrNull(d.min) ?? 0) * 60 || null;
-      out.push({ ...base, kind: 'cardio', activity: LEGACY_CARDIO[d.kind], distanceKm: d.kind === 'run' ? numOrNull(d.km) : null, durationSec, finishedAt: ts });
+      out.push({ ...base, kind: 'cardio', activity: LEGACY_CARDIO[d.kind], distanceKm: d.kind === 'run' ? numOrNull(d.km) : null, durationSec, finishedAt: noon });
     }
   }
   return out;

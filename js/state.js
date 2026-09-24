@@ -48,11 +48,15 @@ export async function load() {
   state.sync = { ...DEFAULT_SYNC, ...(meta.get('sync') || {}) };
   state.active = meta.get('active') || null;
 
-  // Exercícios novos da biblioteca padrão entram em atualizações do app; planos só na 1ª abertura.
-  const missing = SEED_EXERCISES.filter(e => !state.exercises.has(e.id));
-  if (missing.length) {
-    missing.forEach(e => state.exercises.set(e.id, structuredClone(e)));
-    await db.putMany('exercises', missing.map(e => [e.id, e]));
+  // Biblioteca padrão: exercícios novos entram em atualizações do app, e os que você nunca editou
+  // (updatedAt 0) acompanham a versão nova (ex.: vídeos adicionados). Planos só na 1ª abertura.
+  const stale = SEED_EXERCISES.filter(e => {
+    const cur = state.exercises.get(e.id);
+    return !cur || (cur.updatedAt === 0 && JSON.stringify(cur) !== JSON.stringify(e));
+  });
+  if (stale.length) {
+    stale.forEach(e => state.exercises.set(e.id, structuredClone(e)));
+    await db.putMany('exercises', stale.map(e => [e.id, e]));
   }
   if (!meta.get('seeded')) {
     const plans = SEED_PLANS.filter(p => !state.plans.has(p.id));

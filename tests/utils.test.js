@@ -75,6 +75,7 @@ test('importa os treinos salvos no artefato antigo', () => {
   const [gym, run] = r.sessions;
   assert.equal(gym.planId, 'plan-b');
   assert.equal(gym.durationSec, null); // 7209 min descartado
+  assert.equal(new Date(gym.startedAt).getDate(), 18); // o ts do artefato caía em 19/09
   assert.deepEqual(gym.items.map(i => i.exerciseId), ['broadjump', 'terra_romeno']); // ordem do plano
   assert.equal(gym.items[1].sets[0].kg, 20);
   assert.equal(run.kind, 'cardio');
@@ -89,6 +90,17 @@ test('backup no formato atual ida e volta', () => {
   assert.equal(r.plans.length, 2);
   assert.throws(() => parseBackup('{"x":1}'), /não reconhecido/);
   assert.throws(() => parseBackup('nope'), /JSON/);
+});
+
+test('seed: todo exercício dos Treinos A e B tem vídeo com id válido', () => {
+  const byId = new Map(SEED_EXERCISES.map(e => [e.id, e]));
+  for (const p of SEED_PLANS) for (const it of p.items) {
+    const vids = byId.get(it.exerciseId).videos;
+    assert.ok(vids.length >= 1, it.exerciseId);
+    for (const v of vids) assert.deepEqual(parseYouTube(v.id), { id: v.id, start: null }, `${it.exerciseId}: ${v.id}`);
+  }
+  const all = SEED_EXERCISES.flatMap(e => e.videos.map(v => v.id));
+  assert.equal(new Set(all).size, all.length, 'vídeo repetido');
 });
 
 test('seed: todo item de plano aponta para um exercício existente', () => {

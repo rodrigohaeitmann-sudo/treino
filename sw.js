@@ -1,7 +1,7 @@
 // Service worker: guarda o app no aparelho para abrir sem internet (academia com sinal ruim).
 // Os arquivos do app são servidos do cache e atualizados em segundo plano (a versão nova vale
 // na abertura seguinte). Ao adicionar/remover arquivos, atualize SHELL e aumente VERSION.
-const VERSION = 'treino-v1';
+const VERSION = 'treino-v2';
 const SHELL = [
   './',
   'index.html',

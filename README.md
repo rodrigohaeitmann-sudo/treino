@@ -46,9 +46,10 @@ com os mesmos Treinos A e B já cadastrados.
   de reps, descanso, progressão, incremento e observações.
 - Biblioteca com 32 exercícios (os 16 do artefato + comuns de academia), cada um com passos,
   erro comum e alternativas.
-- **Vídeos do YouTube** escolhidos por você: “Buscar no YouTube” abre a busca, você cola o link
-  (vídeo ou Short) e define **início e fim do trecho**. No treino, o vídeo toca **em loop, sem
-  som, só no trecho da execução**. Sem vídeo, aparece a animação do artefato.
+- **Vídeos do YouTube**: os 16 exercícios dos Treinos A e B já vêm com 2 vídeos de execução cada.
+  Para os outros, “Buscar no YouTube” abre a busca, você cola o link (vídeo ou Short) e define
+  **início e fim do trecho**. No treino, o vídeo toca **em loop, sem som, só no trecho da execução**.
+  Sem vídeo, aparece a animação do artefato.
 
 **Histórico e evolução**
 - Calendário de frequência (16 semanas), lista por mês e detalhe editável de cada sessão.

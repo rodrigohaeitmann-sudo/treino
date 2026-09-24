@@ -158,6 +158,30 @@ export const SEED_EXERCISES = [
     mistakes: 'Puxar com os braços em vez do abdômen.', alternatives: 'Abdominal supra' }),
 ];
 
+// Vídeos de execução (YouTube) dos exercícios dos Treinos A e B: dois por exercício, o primeiro é o
+// principal. Escolhidos por busca (título de técnica/execução, canal identificável); sem trecho definido,
+// o vídeo inteiro fica em loop. Ajuste início/fim no editor do exercício.
+const V = (id, title) => ({ id, start: null, end: null, title });
+export const SEED_VIDEOS = {
+  boxjump: [V('MHUrs4pyeEE', 'Técnica e aterrissagem'), V('nWw2iM07rbU', 'Tutorial')],
+  agachamento: [V('rM6SDUdl9fs', 'Como fazer'), V('6ppjJrbrW7g', 'Técnica correta')],
+  supino: [V('ZINbHcRi3U8', 'Leandro Twin (curto)'), V('pCPyqW60Wuk', 'Dicas e postura')],
+  remada_halter: [V('WrF-rpwax4k', 'Fisioprev'), V('SUvZiVClLKw', 'Execução correta')],
+  desenvolvimento: [V('q_w6HnTV6h0', 'Como fazer (curto)'), V('V7rw4dRMw2M', 'Fisioprev')],
+  puxada: [V('7cCiQUdIXWw', 'Fisioprev'), V('25XTUWnt_R4', 'Execução correta')],
+  pallof: [V('91zJZhRx2u0', 'Pallof press'), V('LA6Uc5yIV1c', 'Cabo ou elástico')],
+  panturrilha: [V('55uvKA3JQlk', 'No degrau'), V('IC9sJ-k_rGo', 'Treino Correto')],
+  broadjump: [V('2CpNORdq52U', 'Treino Correto'), V('3XWBFcz_ouM', 'Demonstração')],
+  terra_romeno: [V('-9LSaXZJUXc', 'Execução e erros'), V('QdNf6K1fbaQ', 'Com barra')],
+  barra_fixa: [V('JX_YM7Bp26U', 'Pegada pronada'), V('yodjptqM6C4', 'Como fazer')],
+  supino_inclinado: [V('G-i3jMIbDmo', 'Execução correta'), V('rCPwrZkrVVQ', 'Dicas e postura')],
+  bulgaro: [V('0TJAXeE05Jk', 'Como fazer (curto)'), V('IL4ebT8L1aQ', 'Com halter')],
+  remada_baixa: [V('2YebbYuuBJQ', 'Postura correta'), V('7eTxBNf4RQ4', 'Execução correta')],
+  roda: [V('vRi105QOGKU', '3 dicas'), V('bq1KTUj3ae0', 'Como fazer')],
+  panturrilha_uni: [V('fTmfwq0gCZU', 'No degrau'), V('tyk_RjXoYZs', 'Treino Correto')],
+};
+for (const e of SEED_EXERCISES) if (SEED_VIDEOS[e.id]) e.videos = SEED_VIDEOS[e.id].map(v => ({ ...v }));
+
 const item = (id, exerciseId, sets, repsMin, repsMax, restSec, o = {}) => ({
   id, exerciseId, sets, repsMin, repsMax, restSec, linkNext: false, progression: 'double', increment: null, note: '', ...o,
 });
